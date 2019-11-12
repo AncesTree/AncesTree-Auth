@@ -1,0 +1,26 @@
+{
+  "name": "ancestree_auth",
+  "version": "1.0.0",
+  "description": "Authentication service for the AncesTree social network",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.13.2",
+    "consolidate": "^0.13.1",
+    "cors": "^2.7.1",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "nodemailer": "^6.3.1",
+    "nosql": "^3.0.3",
+    "passport-linkedin-oauth2": "^2.0.0",
+    "qs": "^4.0.0",
+    "randomstring": "^1.0.7",
+    "sync-request": "^2.0.1",
+    "underscore": "^1.8.3",
+    "underscore.string": "^3.1.1"
+  }
+}
