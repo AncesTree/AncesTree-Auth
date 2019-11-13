@@ -1,20 +1,28 @@
 const express = require("express")
 let router = express.Router();
+const jwt = require('jsonwebtoken');
 
-const guardService = require('../services/guardService')
+
+const randomSecretKey = require('../index').randomSecretKey
 const users = require('../models/users')
+const authService = require('../services/authService')
 
-router.get('/', (req,res) => guardService.checkToken(req,res))
 router.post('/login', (req,res) => {
-    users.getUserByEmail(req,res).then(user => {
-        if (guardService.checkPassword(req.query.password, user.password)){
-            // TODO TRAITEMENT
+    users.getUserByEmail(req,res).then(users => {
+        let user = users[0]
+        if (authService.checkPassword(req.query.password, user.password)){
+            user.token = jwt.sign({id: user.id}, authService.randomSecretKey, {expiresIn: '4h'});
+            console.log(user)
             return res.status(200).send(user)
         }
         else{
-            return res.status(400)
+            return res.status(400).send("Invalid password")
         }
     })
+})
+
+router.get('/checkToken', (req,res) => {
+    authService.checkToken(req,res)
 })
 
 module.exports = router

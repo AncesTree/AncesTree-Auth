@@ -12,7 +12,7 @@ const authServer = {
 const client = {
 	"client_id": process.env.CLIENT_ID, 
 	"client_secret": process.env.CLIENT_SECRET,
-	"redirect_uris": ["http://127.0.0.1:9000/oauth/callback"]
+	"redirect_uris": [process.env.REDIRECT_URI]
 }
 let access_token, scope = ["r_liteprofile","r_emailaddress","w_member_social"]
 

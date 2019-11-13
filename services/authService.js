@@ -1,10 +1,11 @@
 const bcrypt = require('bcryptjs');
-const uuidv4 = require('uuid/v4');
 const jwt = require('jsonwebtoken');
-
+const uuidv4 = require('uuid/v4');
+const randomSecretKey = uuidv4();
 
 const checkPassword = (plainPassword,password) => {
-    return bcrypt.compareSync(plainPassword, password)
+    return plainPassword == password
+    //return bcrypt.compareSync(plainPassword, password)
 }
 
 const hashPassword = (plainPassword) => {
@@ -12,7 +13,8 @@ const hashPassword = (plainPassword) => {
     return bcrypt.hashSync(plainPassword, salt);
 }
 
-const checkToken = (req, res, next) => {
+const checkToken = (req, res) => {
+    console.log(req.headers.authorization)
     if (!req.headers.authorization) {
         res.status(401).send('Unauthorized request')
     }
@@ -20,11 +22,12 @@ const checkToken = (req, res, next) => {
     if (token === 'null') {
         res.status(401).send('Unauthorized request')
     }
-    let payload = jwt.verify(token, process.env.SECRET_KEY);
+    let payload = jwt.verify(token, randomSecretKey);
     if (!payload){
         res.status(401).send('Unauthorized request')
     }
-    res.status(200).send(payload.userId)
+    console.log(payload)
+    res.status(200).send(payload.id)
 }
 
-module.exports = {checkPassword, checkToken, hashPassword}
+module.exports = {checkPassword, checkToken, hashPassword, jwt, randomSecretKey}

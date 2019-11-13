@@ -1,6 +1,9 @@
 require('dotenv').config()
 
-var knex = require('knex')({
+
+let knex 
+if(process.env.ENV == 'DEV'){
+  knex = require('knex')({
     client: 'pg',
     version: '7.2',
     connection: {
@@ -10,6 +13,14 @@ var knex = require('knex')({
       database : process.env.DATABASE
     }
   });
+}
+else{
+  knex = require('knex')({
+    client: 'pg',
+    version: '7.2',
+    connection: process.env.DB_URL
+  }); 
+}
 
 module.exports = knex
 

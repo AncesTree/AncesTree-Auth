@@ -7,9 +7,6 @@ const users = require('../models/users')
 router.post('/newInvitation', (req, res) => {
     users.newUser(req, res)
     email.sendInvitation(req.query.email,req.query.firstname,req.query.lastname)
-}
-    
-    //res.redirect(sentEmail)
-)
+})
 
 module.exports = router
