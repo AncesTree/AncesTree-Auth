@@ -7,3 +7,8 @@
 .env
 DB
 emailExample.js
+
+# Credentials
+.travis/*.key
+.travis/*.key.pub
+.idea
