@@ -20,10 +20,6 @@ app.use('/', (req, res) => {
 })
 
 const server = app.listen(8080, () => {
-  const {
-    address: host,
-    port: port
-  } = server.address()
-  console.log(`OAuth Client is listening at http://${host}:${port}`)
+  console.log("Auth server started")
 })
 
