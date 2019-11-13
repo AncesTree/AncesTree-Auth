@@ -18,7 +18,9 @@ else{
   knex = require('knex')({
     client: 'pg',
     version: '7.2',
-    connection: process.env.DB_URL
+    connection: process.env.DB_URL,
+    searchPath: 'knex,public',
+    pool: { min: 0, max: 7 }
   }); 
 }
 
