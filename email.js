@@ -4,24 +4,26 @@ require('dotenv').config()
 async function getTransporter(){
     let testAccount = await nodemailer.createTestAccount();
     // create reusable transporter object using the default SMTP transport
-
-    return transporter = nodemailer.createTransport({
-        host: 'smtp.ethereal.email',
-        port: 587,
-        secure: false, // true for 465, false for other ports
-        auth: {
-            user: testAccount.user, // generated ethereal user
-            pass: testAccount.pass // generated ethereal password
-        }
-    });
-
-    /*return nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-               user: process.env.EMAIL,
-               pass: process.env.GMAIL_PASSWORD
-           }
-       });*/
+    if(process.env.ENV === 'DEV'){
+        return transporter = nodemailer.createTransport({
+            host: 'smtp.ethereal.email',
+            port: 587,
+            secure: false, // true for 465, false for other ports
+            auth: {
+                user: testAccount.user, // generated ethereal user
+                pass: testAccount.pass // generated ethereal password
+            }
+        });
+    }
+    else{
+        return nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                   user: process.env.EMAIL,
+                   pass: process.env.GMAIL_PASSWORD
+               }
+           });
+    }
 }
 
 
