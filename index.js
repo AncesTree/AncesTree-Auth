@@ -15,9 +15,14 @@ app.use('/invitation', invitation)
 app.use('/users', users)
 app.use('/auth', auth)
 
-app.use('/',  (req, res) => {res.status(200).sendFile(__dirname+'/api.html')})
+app.use('/', (req, res) => {
+  res.status(200).sendFile(__dirname + '/api.html')
+})
 
-const server = app.listen(9000, 'localhost', () => {
-  const {address: host, port: port} = server.address()
+const server = app.listen(3000, 'localhost', () => {
+  const {
+    address: host,
+    port: port
+  } = server.address()
   console.log(`OAuth Client is listening at http://${host}:${port}`)
 })
