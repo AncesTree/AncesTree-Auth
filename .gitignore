@@ -5,3 +5,5 @@
 
 # System Files
 .env
+DB
+emailExample.js

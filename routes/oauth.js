@@ -72,7 +72,6 @@ router.get('/ProfilePicture', (req,res) => {
 	})
 	if(resource.statusCode >= 200 && resource.statusCode < 300){
 		let body = JSON.parse(resource.getBody())
-		console.log(body)
 		res.status(resource.statusCode).json(body)
 		//res.status(resource.statusCode).json(body['profilePicture']['displayImage~']['elements'][3]['identifiers'][0]['identifier'])
 	}

@@ -1,12 +1,15 @@
 const express = require("express")
-var router = express.Router();
+let router = express.Router();
 
 const email = require("../email")
+const users = require('../models/users')
 
-router.get('/sendInvitation', async (req, res) => {
-    console.log(req.query)
-    let sentEmail = await email.sendInvitation(req.query.email,req.query.firstname,req.query.lastname)
-    res.redirect(sentEmail)
-})
+router.post('/newInvitation', (req, res) => {
+    users.newUser(req, res)
+    email.sendInvitation(req.query.email,req.query.firstname,req.query.lastname)
+}
+    
+    //res.redirect(sentEmail)
+)
 
 module.exports = router

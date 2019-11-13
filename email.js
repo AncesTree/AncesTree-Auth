@@ -1,9 +1,10 @@
 const nodemailer = require('nodemailer');
-
+require('dotenv').config()
 
 async function getTransporter(){
     let testAccount = await nodemailer.createTestAccount();
     // create reusable transporter object using the default SMTP transport
+
     return transporter = nodemailer.createTransport({
         host: 'smtp.ethereal.email',
         port: 587,
@@ -13,13 +14,21 @@ async function getTransporter(){
             pass: testAccount.pass // generated ethereal password
         }
     });
+
+    /*return nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+               user: process.env.EMAIL,
+               pass: process.env.GMAIL_PASSWORD
+           }
+       });*/
 }
 
 
 async function sendInvitation(email, firstname, lastname){
     let transporter = await getTransporter()
     let sentEmail = await transporter.sendMail({
-        from: '"Ancestree" <ancestree@email.com>', // sender address
+        from: '"Ancestree" <noreply@ancestree.com>', // sender address
         to: email, // list of receivers
         subject: 'Rejoignez Ancestree! Le reseau social des anciens IG', // Subject line
         text: `Bonjour ${firstname} ${lastname}\nRejoignez Ancestree le reseau social des anciens IG en cliquant ici`, // plain text body
