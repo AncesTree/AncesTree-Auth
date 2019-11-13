@@ -19,7 +19,7 @@ app.use('/', (req, res) => {
   res.status(200).sendFile(__dirname + '/api.html')
 })
 
-const server = app.listen(8080, 'localhost', () => {
+const server = app.listen(8080, () => {
   const {
     address: host,
     port: port
