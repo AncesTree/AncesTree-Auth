@@ -4,7 +4,8 @@
   "description": "Authentication service for the AncesTree social network",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\""
+     "start": "node index.js",
+    "test": "echo \"no test specified\""
   },
   "author": "",
   "license": "ISC",
