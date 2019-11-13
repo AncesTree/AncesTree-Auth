@@ -13,5 +13,5 @@ before_install:
 - chmod 600 .travis/deploy.key
 - ssh-add .travis/deploy.key
 - ssh-keyscan igpolytech.fr >> ~/.ssh/known_hosts
-- git remote add deploy dokku@igpolytech.fr:ancestree-auth-debug
+- git remote add deploy dokku@igpolytech.fr:ancestree-auth
 - git config --global push.default simple
