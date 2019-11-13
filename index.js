@@ -14,10 +14,10 @@ app.use('/oauth', oauth)
 app.use('/invitation', invitation)
 app.use('/users', users)
 app.use('/auth', auth)
-/*
+
 app.use('/', (req, res) => {
   res.status(200).sendFile(__dirname + '/api.html')
-})*/
+})
 
 const server = app.listen(8080, () => {
   console.log("Auth server started")
