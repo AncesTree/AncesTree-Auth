@@ -28,13 +28,13 @@ router.post('/register', (req,res) => {
     users.newUser(req.body.email, authService.hashPassword(req.body.password))
     .then((user) => {
         token = jwt.sign({id: user.id}, authService.randomSecretKey, {expiresIn: '4h'});
-        res.status(201).send(token)
+        res.status(201).send({token: token})
     })
     .catch(error => res.status(400).send(error))
 })
 
 router.get('/checktoken', (req,res) => {
-    authService.checkToken(req).then((payload) => res.status(200).send(payload.id)).catch((error) => res.status(403).send(error))
+    authService.checkToken(req).then((payload) => res.status(200).send({id: payload.id})).catch((error) => res.status(403).send(error))
 })
 
 module.exports = router
