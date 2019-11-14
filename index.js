@@ -2,8 +2,10 @@ const express = require("express")
 const request = require("sync-request")
 const qs = require("qs")
 require('dotenv').config()
+var bodyParser = require('body-parser')
 
 const app = express()
+app.use(bodyParser.json())
 
 const oauth = require("./routes/oauth")
 const invitation = require("./routes/invitation")
