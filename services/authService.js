@@ -27,7 +27,6 @@ const checkToken = (req) => {
         }
         resolve(payload)
     })
-    
 }
 
 module.exports = {checkPassword, checkToken, hashPassword, jwt, randomSecretKey}

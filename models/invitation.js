@@ -20,7 +20,7 @@ const knex = require("../config/database")
     const deleteInvitation = (id) => {
         return new Promise((resolve, reject) => { 
             knex('invitations').where({id: id}).del()
-            .then(user => resolve(user))
+            .then(invit => resolve(invit))
             .catch(err => reject(err))
         })
     }

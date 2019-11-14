@@ -45,18 +45,24 @@ router.get('/check', (req,res) => {
 })
 
 router.put('/', (req,res) => {
-    let deleteInvitationPromise = invitation.deleteInvitation(req.body.id)
-    let updateUserPromise = users.updateUser(req.body.id, req.body.email, authService.hashPassword(req.body.password))
+    invitation.getInvitation(req.body.id).then((id) => {
+        if(id.length == 1){
+            let deleteInvitationPromise = invitation.deleteInvitation(req.body.id)
+            let updateUserPromise = users.updateUser(req.body.id, req.body.email, authService.hashPassword(req.body.password))
 
-    Promise.all([updateUserPromise, deleteInvitationPromise])
-    .then((result) => {
-        let user = result[1]
-        token = jwt.sign({id: user.id}, authService.randomSecretKey, {expiresIn: '4h'});
-        res.status(201).send({token: token})
+             Promise.all([updateUserPromise, deleteInvitationPromise])
+            .then((result) => {
+                let user = result[1]
+                token = jwt.sign({id: user.id}, authService.randomSecretKey, {expiresIn: '4h'});
+                 res.status(201).send({token: token})
+            })
+            .catch(error => res.status(400).send(error))
+            }
+        else{
+            res.status(404).send()
+        }
     })
-    .catch(error => {
-        console.log(error)
-        res.status(400).send(error)})
+    .catch((error) => res.status(400).send(error))
 })
 
 module.exports = router
