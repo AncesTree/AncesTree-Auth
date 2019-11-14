@@ -8,14 +8,18 @@ const users = require('../models/users')
 const authService = require('../services/authService')
 
 router.post('/login', (req,res) => {
-    users.getUserByEmail(req,res).then(users => {
-        let user = users[0]
-        if (authService.checkPassword(req.body.password, user.password)){
-            token = jwt.sign({id: user.id}, authService.randomSecretKey, {expiresIn: '4h'});
-            return res.status(200).send(token)
+    users.getUserByEmail(req.body.email).then(user => {
+        if(user){
+            if (authService.checkPassword(req.body.password, user.password)){
+                token = jwt.sign({id: user.id}, authService.randomSecretKey, {expiresIn: '4h'});
+                return res.status(200).send({token: token})
+            }
+            else{
+                return res.status(400).send("Invalid password")
+            }
         }
         else{
-            return res.status(400).send("Invalid password")
+            res.status(400).send("User not found!")
         }
     })
 })
