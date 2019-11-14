@@ -52,7 +52,7 @@ router.put('/', (req,res) => {
     .then((result) => {
         let user = result[1]
         token = jwt.sign({id: user.id}, authService.randomSecretKey, {expiresIn: '4h'});
-        res.status(201).send(token)
+        res.status(201).send({token: token})
     })
     .catch(error => {
         console.log(error)
