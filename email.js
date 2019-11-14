@@ -15,15 +15,14 @@ async function getTransporter(){
     });
 }
 
-
-async function sendInvitation(email, firstname, lastname){
+async function sendInvitation(email, firstname, lastname, id){
     let transporter = await getTransporter()
     let sentEmail = await transporter.sendMail({
         from: '"Ancestree" <noreply@ancestree.com>', // sender address
         to: email, // list of receivers
         subject: 'Rejoignez Ancestree! Le reseau social des anciens IG', // Subject line
-        text: `Bonjour ${firstname} ${lastname}\nRejoignez Ancestree le reseau social des anciens IG en cliquant ici`, // plain text body
-    });
+        text: `Bonjour ${firstname} ${lastname}\nVous avez été invité à rejoindre Ancestree, le reseau social des anciens IG en cliquant sur le lien suivant https://ancestree.igpolytech.fr/join/${id}`, // plain text body
+    })
     console.log('Message sent: %s', sentEmail.messageId);
     // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
 
