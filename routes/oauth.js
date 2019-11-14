@@ -22,7 +22,7 @@ router.get('/authorize', (req, res) => {
 
 router.get('/callback', (req, res) => {
 
-	let code = req.query.code
+	let code = req.body.code
 	console.log("OAuth token "+code)
 	let form_data = qs.stringify({
 		grant_type: 'authorization_code',

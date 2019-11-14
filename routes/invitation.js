@@ -11,15 +11,15 @@ const invitation = require('../models/invitation')
 const users = require('../models/users')
 
 router.post('/', (req, res) => {
-    users.newInvitedUser(req.query.email).then(user => {
-        let emailPromise = emailService.sendInvitation(req.query.email,req.query.firstname,req.query.lastname,user.id)
+    users.newInvitedUser(req.body.email).then(user => {
+        let emailPromise = emailService.sendInvitation(req.body.email,req.body.firstname,req.body.lastname,user.id)
         let graphPromise = axios.post('https://ancestree-api-neo4j.igpolytech.fr/api/users', {
             id: user.id,
-            firstname: req.query.firstname,
-            lastname: req.query.lastname,
-            email: req.query.email,
-            birthdate: req.query.birthdate,
-            phone: req.query.phone
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            email: req.body.email,
+            birthdate: req.body.birthdate,
+            phone: req.body.phone
         })
         let saveInvitationPromise = invitation.newInvitation(user.id)
 
@@ -32,7 +32,7 @@ router.post('/', (req, res) => {
 })
 
 router.get('/check', (req,res) => {
-    invitation.getInvitation(req.query.id)
+    invitation.getInvitation(req.body.id)
     .then((id) => {
         if(id.length == 1){
             res.status(200).send()
@@ -45,8 +45,8 @@ router.get('/check', (req,res) => {
 })
 
 router.put('/', (req,res) => {
-    let deleteInvitationPromise = invitation.deleteInvitation(req.query.id)
-    let updateUserPromise = users.updateUser(req.query.id, req.query.email, authService.hashPassword(req.query.password))
+    let deleteInvitationPromise = invitation.deleteInvitation(req.body.id)
+    let updateUserPromise = users.updateUser(req.body.id, req.body.email, authService.hashPassword(req.body.password))
 
     Promise.all([updateUserPromise, deleteInvitationPromise])
     .then((result) => {

@@ -10,7 +10,7 @@ const authService = require('../services/authService')
 router.post('/login', (req,res) => {
     users.getUserByEmail(req,res).then(users => {
         let user = users[0]
-        if (authService.checkPassword(req.query.password, user.password)){
+        if (authService.checkPassword(req.body.password, user.password)){
             token = jwt.sign({id: user.id}, authService.randomSecretKey, {expiresIn: '4h'});
             return res.status(200).send(token)
         }
@@ -21,7 +21,7 @@ router.post('/login', (req,res) => {
 })
 
 router.post('/register', (req,res) => {
-    users.newUser(req.query.email, authService.hashPassword(req.query.password))
+    users.newUser(req.body.email, authService.hashPassword(req.body.password))
     .then((user) => {
         token = jwt.sign({id: user.id}, authService.randomSecretKey, {expiresIn: '4h'});
         res.status(201).send(token)
