@@ -15,7 +15,6 @@ async function getTransporter(){
     });
 }
 
-
 async function sendInvitation(email, firstname, lastname, id){
     let transporter = await getTransporter()
     let sentEmail = await transporter.sendMail({
