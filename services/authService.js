@@ -17,7 +17,7 @@ const checkToken = (req) => {
         if (!req.headers.authorization) {
             reject('Unauthorized')
         }
-        let token = req.headers.authorization.split(' ')[1];
+        let token = req.headers.authorization;
         if (token === 'null') {
             reject('Unauthorized')
         }
