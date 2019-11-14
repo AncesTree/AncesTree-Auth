@@ -1,60 +1,62 @@
-const knex = require("../database")
+const knex = require("../config/database")
 
-    const newUser = (req, res) => {
-        console.log(req.query)
-        const {email, password} = req.query
-        return knex('users').insert({email: email, password: password})
-        .returning('id')
-        .then(user => {
-            res.status(201).json(user)
-        })
-        .catch(err => res.status(400).json(err))
+    const newUser = (email, password) => {
+        return new Promise((resolve, reject) => {
+            knex('users').insert({email: email, password: password})
+            .returning('*')
+            .then(user => resolve(user[0]))
+            .catch(err => reject(err))
+        }) 
     }
 
-    const getUser = (req, res) => {
-        console.log(req.query)
-        const {id} = req.query
-        return knex('users').select().where({id: id})
-        .then(user => {
-            res.status(200).json(user)
+    const newInvitedUser = (email) => {
+        return new Promise((resolve, reject) => {
+            knex('users').insert({email: email})
+            .returning('*')
+            .then(user => resolve(user[0]))
+            .catch(err => reject(err))
         })
-        .catch(err => res.status(400).json(err))
     }
 
-    const getUserByEmail = (req, res) => {
-        console.log(req.query)
-        const {email} = req.query
-        return knex('users').select().where({email: email})
-        .then(user => {
-            return new Promise((resolve, reject) => {
-                resolve(user)
-            })
+    const getUser = (id) => {
+        return new Promise((resolve, reject) => {
+            knex('users')
+            .select()
+            .where({id: id})
+            .then(user => resolve(user[0]))
+            .catch(err => reject(err))
         })
-        .catch(err => res.status(400).json(err))
     }
 
-    const updateUser = (req,res) => {
-        console.log(req.query)
-        const {id, email, password} = req.query
-        return knex('users')
-        .where({id: id})
-        .update({email: email, password: password})
-        .then(user => {
-            res.status(200).json(user)
+    const getUserByEmail = (email) => {
+        return new Promise((resolve, reject) => {
+            knex('users')
+            .select()
+            .where({email: email})
+            .then(user => resolve(user[0]))
+            .catch(err => reject(err))
         })
-        .catch(err => res.status(400).json(err))
     }
 
-    const deleteUser = (req,res) => {
-        console.log(req.query)
-        const {id} = req.query
-        return knex('users')
-        .where({id: id})
-        .del()
-        .then(user => {
-            res.status(200).json(user)
+    const updateUser = (id, email, password) => {
+        return new Promise((resolve, reject) => {
+            knex('users')
+            .where({id: id})
+            .update({email: email, password: password})
+            .returning("*")
+            .then(user => resolve(user[0]))
+            .catch(err => reject(err))
         })
-        .catch(err => res.status(400).json(err))
     }
 
-module.exports = {newUser, getUser, getUserByEmail, deleteUser, updateUser}
+    const deleteUser = (id) => {
+        return new Promise((resolve, reject) => {
+            knex('users')
+            .where({id: id})
+            .del()
+            .then(user => resolve(user[0]))
+            .catch(err => reject(err))
+        })
+    }
+
+module.exports = {newUser, getUser, getUserByEmail, deleteUser, updateUser,newInvitedUser}

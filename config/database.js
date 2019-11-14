@@ -1,11 +1,11 @@
 require('dotenv').config()
 
-
 let knex 
 if(process.env.ENV == 'DEV'){
   knex = require('knex')({
     client: 'pg',
     connection: {
+      port: process.env.PORT,
       host : process.env.HOST,
       user : process.env.USER,
       password : process.env.PASSWORD,
