@@ -44,7 +44,7 @@ router.get('/callback', (req, res) => {
 	res.redirect('/')
 })
 
-router.get('/LinkedInProfile', (req,res) => {
+router.get('/linkedinprofile', (req,res) => {
   let headers = {
 		'Authorization': 'Bearer '+access_token,
   }
@@ -63,7 +63,26 @@ router.get('/LinkedInProfile', (req,res) => {
 	}
 })
 
-router.get('/ProfilePicture', (req,res) => {
+router.get('/email', (req,res) => {
+	let headers = {
+		  'Authorization': 'Bearer '+access_token,
+	}
+	let resource = request('GET', 'https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))', {
+		  headers: headers
+	})
+	console.log(resource.statusCode)
+	if(resource.statusCode >= 200 && resource.statusCode < 300){
+	  let body = JSON.parse(resource.getBody())
+	  console.log(body)
+	  res.status(resource.statusCode).json(body)
+	  }
+	  else {
+	  console.log("error: Server returned response code: "`${resource.statusCode}`)
+	  res.status(resource.statusCode).send("error: Server returned response code: "`${resource.statusCode}`)
+	  }
+  })
+
+router.get('/profilepicture', (req,res) => {
 	let headers = {
 		  'Authorization': 'Bearer '+access_token,
 	}
