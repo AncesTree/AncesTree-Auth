@@ -1,12 +1,12 @@
 const knex = require("../config/database")
 
-    const newUser = (id, email, password) => {
+    const newUser = (id, email) => {
         return new Promise((resolve, reject) => {
-            knex('users').insert({id: id, email: email, password: password})
+            knex('linkedin_users').insert({email: email, id: id})
             .returning('*')
-            .then(user => resolve(user[0]))
+            .then(user => resolve(user))
             .catch(err => reject(err))
-        }) 
+        })
     }
 
     const getUser = (id) => {

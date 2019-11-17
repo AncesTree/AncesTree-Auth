@@ -4,7 +4,7 @@ const knex = require("../config/database")
         return new Promise((resolve, reject) => { 
             knex('invitations').insert({id: id})
             .returning('id')
-            .then(user => resolve(user))
+            .then(invit => resolve(invit))
             .catch(err => reject(err))
         })
     }
@@ -12,14 +12,14 @@ const knex = require("../config/database")
     const getInvitation = (id) => {
         return new Promise((resolve, reject) => { 
             knex('invitations').select().where({id: id})
-            .then(user => resolve(user))
+            .then(invit => resolve(invit))
             .catch(err => reject(err))
         })
     }
 
-    const deleteInvitation = (id) => {
+    const deleteInvitation = (id_inv) => {
         return new Promise((resolve, reject) => { 
-            knex('invitations').where({id: id}).del()
+            knex('invitations').where({id: id_inv}).del()
             .then(invit => resolve(invit))
             .catch(err => reject(err))
         })

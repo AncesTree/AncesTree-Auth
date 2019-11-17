@@ -1,9 +1,6 @@
 const express = require("express")
 let router = express.Router();
 const jwt = require('jsonwebtoken');
-
-
-const randomSecretKey = require('../index').randomSecretKey
 const users = require('../models/users')
 const authService = require('../services/authService')
 
@@ -34,7 +31,9 @@ router.post('/register', (req,res) => {
 })
 
 router.get('/checktoken', (req,res) => {
-    authService.checkToken(req).then((payload) => res.status(200).send({id: payload.id})).catch((error) => res.status(403).send(error))
+    authService.checkToken(req).then((payload) => res.status(200).send({id: payload.id})).catch((error) => {
+        res.status(403).send(error)
+     })
 })
 
 module.exports = router
