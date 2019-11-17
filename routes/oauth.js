@@ -16,7 +16,7 @@ const client = {
 	"client_id": process.env.CLIENT_ID, 
 	"client_secret": process.env.CLIENT_SECRET,
 	"redirect_uris_login": [process.env.REDIRECT_URI_LOGIN],
-	"redirect_uris_registration": ['http://localhost:3000/callback_registration']
+	"redirect_uris_registration": ['http://localhost:3000/registration_callback']
 }
 let access_token, scope = ["r_liteprofile","r_emailaddress","w_member_social"]
 
