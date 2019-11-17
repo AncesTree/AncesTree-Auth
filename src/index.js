@@ -9,12 +9,14 @@ const app = express()
 app.use(cors());
 app.use(bodyParser.json())
 
-const oauth = require("./routes/oauth")
+const linkedin = require("./routes/oauth/linkedin")
+const mydash = require("./routes/oauth/mydash")
 const invitation = require("./routes/invitation")
 const users = require("./routes/users")
 const auth = require("./routes/auth")
 
-app.use('/oauth', oauth)
+app.use('/oauth/linkedin', linkedin)
+app.use('/oauth/mydash', mydash)
 app.use('/invitation', invitation)
 app.use('/users', users)
 app.use('/auth', auth)
