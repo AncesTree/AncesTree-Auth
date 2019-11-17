@@ -18,7 +18,7 @@ const client = {
 	"redirect_uris_login": [process.env.REDIRECT_URI_LOGIN],
 	"redirect_uris_registration": ['http://localhost:3000/registration_callback']
 }
-let access_token, scope = ["r_liteprofile","r_emailaddress","w_member_social"]
+let scope = ["r_liteprofile","r_emailaddress","w_member_social"]
 
 router.get('/register/:id', (req, res) => {
  	res.redirect(authServer.authorizationEndpoint+'?response_type=code&client_id='+client.client_id+'&redirect_uri='+client.redirect_uris_registration+'&state=fooobar&scope='+scope)
@@ -43,10 +43,8 @@ router.get('/registration_callback', (req, res) => {
 	})
 	let body = JSON.parse(response.getBody())
 
-	access_token = body.access_token
-
-	let account_email = linkedInService.getEmail(access_token)
-	let profile_picture = linkedInService.getProfilePicture(access_token)
+	let account_email = linkedInService.getEmail(body.access_token)
+	let profile_picture = linkedInService.getProfilePicture(body.access_token)
 
 	linkedInService.completeInvitation(account_email, req.query.id, profile_picture)
 	.then((result) => {
@@ -55,25 +53,6 @@ router.get('/registration_callback', (req, res) => {
 	.catch((err) => {
 		res.status(err.status).send(err.error).end()
 	})	
-})
-
-router.get('/linkedinprofile', (req,res) => {
-  let headers = {
-		'Authorization': 'Bearer '+access_token,
-  }
-  let resource = request('GET', 'https://api.linkedin.com/v2/me', {
-		headers: headers
-  })
-  console.log(resource.statusCode)
-  if(resource.statusCode >= 200 && resource.statusCode < 300){
-    let body = JSON.parse(resource.getBody())
-    console.log(body)
-	res.status(resource.statusCode).json(body)
-	}
-	else {
-	console.log("error: Server returned response code: "`${resource.statusCode}`)
-	res.status(resource.statusCode).send("error: Server returned response code: "`${resource.statusCode}`)
-	}
 })
 
 module.exports = router
