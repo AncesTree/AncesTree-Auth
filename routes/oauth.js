@@ -90,7 +90,7 @@ router.get('/login_callback', (req, res) => {
 			})
 			.catch((err) => {
 				console.log(err.error)
-				res.redirect(config.CLIENT_URL+'/login')
+				res.redirect(config.CLIENT_URL+'/login/unknown_linkedin_account')
 			})
 		}
 		else {
