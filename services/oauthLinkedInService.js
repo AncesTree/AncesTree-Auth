@@ -19,7 +19,6 @@ const completeInvitation = (email, invitationId, profilePicture) => {
                     let deleteInvitedUserPromise = invitedUsers.deleteUser(id)
                     Promise.all([deleteInvitationPromise, deleteInvitedUserPromise])
                     .then((result) => {
-                        let user = result[0]
                         token = jwt.sign({id: id}, authService.randomSecretKey, {expiresIn: '4h'});
                         resolve({token: token})
                     })
@@ -67,4 +66,18 @@ const getProfilePicture = (access_token) => {
 	}
 }
 
-module.exports = {getProfilePicture, getEmail, completeInvitation}
+const handlelogin = (email) => {
+	return new Promise((resolve, reject) => {
+		linkedInUser.getUserByEmail(email).then((user) => {
+			if (user.id.length > 0){
+				let token = jwt.sign({id: user.id}, authService.randomSecretKey, {expiresIn: '4h'});
+				resolve({token: token})
+			}
+			else{
+				reject({error:'User not found', status:404})
+			}
+		}).catch((err) => reject({error:err, status:404}))
+	})
+}
+
+module.exports = {getProfilePicture, getEmail, completeInvitation, handlelogin}

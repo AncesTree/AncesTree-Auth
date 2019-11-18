@@ -13,7 +13,6 @@ const invitedUsers = require("../models/invitedUsers")
 router.post('/', (req, res) => {
     invitedUsers.newUser(req.body.email).then(user => {
         let emailPromise = emailService.sendInvitation(req.body.email,req.body.firstname,req.body.lastname,user.id)
-        
         let token = jwt.sign({id: user.id}, authService.randomSecretKey, {expiresIn: '4h'});
         const options = {headers: {Authorization: token, 'Content-Type': 'application/json'}}
         

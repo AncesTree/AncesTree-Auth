@@ -21,7 +21,7 @@ const knex = require("../config/database")
 
     const getUserByEmail = (email) => {
         return new Promise((resolve, reject) => {
-            knex('users')
+            knex('linkedin_users')
             .select()
             .where({email: email})
             .then(user => resolve(user[0]))
