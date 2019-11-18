@@ -88,7 +88,10 @@ router.get('/login_callback', (req, res) => {
 			linkedInService.handlelogin(account_email).then((result) => {
 				res.redirect(config.CLIENT_URL+'/token/'+result.token)
 			})
-			.catch((err) => res.status(err.status).send(err.error))
+			.catch((err) => {
+				console.log(err.error)
+				res.redirect(config.CLIENT_URL+'/login')
+			})
 		}
 		else {
 			res.redirect(config.CLIENT_URL+'/login')
