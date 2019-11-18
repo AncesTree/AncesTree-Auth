@@ -1,6 +1,5 @@
 
 const express = require("express")
-var router = express.Router();
 const jwt = require('jsonwebtoken');
 const authService = require('../services/authService')
 const request = require("sync-request")
@@ -11,7 +10,8 @@ require('dotenv').config()
 
 const authServer = {
 	authorizationEndpoint: 'http://oauth-dev.igpolytech.fr/oauth/authorize',
-	tokenEndpoint: 'http://oauth-dev.igpolytech/oauth/token'
+	tokenEndpoint: 'http://oauth-dev.igpolytech/oauth/token',
+	refreshEndpoint: 'http://oauth-dev.igpolytech/oauth/refresh'
 }
 const client = {
 	"client_id": process.env.CLIENT_ID, 
@@ -21,11 +21,11 @@ const client = {
 }
 let access_token
 
-router.get('/register/:id', (req, res) => {
- 	res.redirect(authServer.authorizationEndpoint+'?response_type=code&client_id=network&redirect_uri=http://localhost:3000/registration_callback&state=fooobar')
-})
+exports.register = async (req, res) => {
+ 	return res.redirect(authServer.authorizationEndpoint+'?response_type=code&client_id=network&redirect_uri=http://localhost:3000/registration_callback&state=fooobar')
+}
 
-router.get('/registration_callback', (req, res) => {
+exports.registration_callback = async (req, res) => {
 	console.log(req.query.id)
 	let code = req.query.code
 	let form_data = qs.stringify({
@@ -51,30 +51,27 @@ router.get('/registration_callback', (req, res) => {
 
 	linkedInService.completeInvitation(account_email, req.query.id, profile_picture)
 	.then((result) => {
-		res.redirect(config.CLIENT_URL+'/token/'+result.token).end()
+		return res.redirect(config.CLIENT_URL+'/token/'+result.token).end()
 	})
 	.catch((err) => {
-		res.status(err.status).send(err.error).end()
+		return res.status(err.status).send(err.error).end()
 	})	
-})
+}
 
-router.get('/linkedinprofile', (req,res) => {
-  let headers = {
-		'Authorization': 'Bearer '+access_token,
-  }
-  let resource = request('GET', 'https://api.linkedin.com/v2/me', {
-		headers: headers
-  })
-  console.log(resource.statusCode)
-  if(resource.statusCode >= 200 && resource.statusCode < 300){
-    let body = JSON.parse(resource.getBody())
-    console.log(body)
-	res.status(resource.statusCode).json(body)
-	}
-	else {
-	console.log("error: Server returned response code: "`${resource.statusCode}`)
-	res.status(resource.statusCode).send("error: Server returned response code: "`${resource.statusCode}`)
-	}
-})
+exports.refresh  = async (req, res) => {
+	const refreshToken = req.body.refresh_token
 
-module.exports = router
+	let form_data = qs.stringify({
+		token: refreshToken,
+		client_id: client.client_id
+	})
+
+	const headers = {
+		'Content-Type':'application/x-www-form-urlencoded'
+	}
+	let response = request('POST', authServer.refreshEndpoint, {
+		headers: headers,
+		body: form_data
+	})
+
+}
