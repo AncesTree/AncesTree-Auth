@@ -22,7 +22,7 @@ router.post('/login', (req,res) => {
 })
 
 router.post('/register', (req,res) => {
-    users.newUser(req.body.email, authService.hashPassword(req.body.password))
+    users.newUserWithoutID(req.body.email, authService.hashPassword(req.body.password))
     .then((user) => {
         token = jwt.sign({id: user.id}, authService.randomSecretKey, {expiresIn: '4h'});
         res.status(201).send({token: token})

@@ -9,6 +9,15 @@ const knex = require("../config/database")
         }) 
     }
 
+    const newUserWithoutID = (id, email, password) => {
+        return new Promise((resolve, reject) => {
+            knex('users').insert({email: email, password: password})
+            .returning('*')
+            .then(user => resolve(user[0]))
+            .catch(err => reject(err))
+        }) 
+    }
+
     const getUser = (id) => {
         return new Promise((resolve, reject) => {
             knex('users')
@@ -50,4 +59,4 @@ const knex = require("../config/database")
         })
     }
 
-module.exports = {newUser, getUser, getUserByEmail, deleteUser, updateUser}
+module.exports = {newUser, getUser, getUserByEmail, deleteUser, updateUser, newUserWithoutID}
