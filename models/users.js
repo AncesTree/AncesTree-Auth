@@ -9,7 +9,7 @@ const knex = require("../config/database")
         }) 
     }
 
-    const newUserWithoutID = (id, email, password) => {
+    const newUserWithoutID = (email, password) => {
         return new Promise((resolve, reject) => {
             knex('users').insert({email: email, password: password})
             .returning('*')
