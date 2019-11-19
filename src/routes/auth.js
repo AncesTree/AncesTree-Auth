@@ -1,39 +1,49 @@
-const express = require("express")
-let router = express.Router();
-const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken')
 const users = require('../models/users')
 const authService = require('../services/authService')
 
-router.post('/login', (req,res) => {
-    users.getUserByEmail(req.body.email).then(user => {
-        if(user){
-            if (authService.checkPassword(req.body.password, user.password)){
-                token = jwt.sign({id: user.id}, authService.randomSecretKey, {expiresIn: '4h'});
-                return res.status(200).send({token: token})
-            }
-            else{
-                return res.status(400).send("Invalid password")
-            }
-        }
-        else{
-            res.status(400).send("User not found!")
-        }
-    })
-})
+const INVALID_REQUEST = 'invalid request'
 
-router.post('/register', (req,res) => {
-    users.newUser(req.body.email, authService.hashPassword(req.body.password))
+exports.login = async (req, res) => {
+  if (!req.body.email || !req.body.password) {
+    return res.status(400).json({
+      error: INVALID_REQUEST,
+      message: 'email or password was missing from the string query'
+    })
+  }
+
+  users.getUserByEmail(req.body.email).then(user => {
+    if (user) {
+      if (authService.checkPassword(req.body.password, user.password)) {
+        const token = jwt.sign({ id: user.id }, authService.randomSecretKey, { expiresIn: '4h' })
+        return res.status(200).send({ token: token })
+      } else {
+        return res.status(400).send('Invalid password')
+      }
+    } else {
+      return res.status(400).send('User not found!')
+    }
+  })
+}
+
+exports.register = async (req, res) => {
+  if (!req.body.email || !req.body.password) {
+    return res.status(400).json({
+      error: INVALID_REQUEST,
+      message: 'email or password was missing from the string query'
+    })
+  }
+
+  users.newUser(req.body.email, authService.hashPassword(req.body.password))
     .then((user) => {
-        token = jwt.sign({id: user.id}, authService.randomSecretKey, {expiresIn: '4h'});
-        res.status(201).send({token: token})
+      const token = jwt.sign({ id: user.id }, authService.randomSecretKey, { expiresIn: '4h' })
+      res.status(201).send({ token: token })
     })
     .catch(error => res.status(400).send(error))
-})
+}
 
-router.get('/checktoken', (req,res) => {
-    authService.checkToken(req).then((payload) => res.status(200).send({id: payload.id})).catch((error) => {
-        res.status(403).send(error)
-     })
-})
-
-module.exports = router
+exports.checktoken = async (req, res) => {
+  authService.checkToken(req).then((payload) => res.status(200).send({ id: payload.id })).catch((error) => {
+    res.status(403).send(error)
+  })
+}
