@@ -10,7 +10,8 @@ const invitation = require('../models/invitation')
 const users = require('../models/users')
 const invitedUsers = require("../models/invitedUsers")
 
-router.post('/', (req, res) => {
+exports.newInvitation = (req, res) => {
+    console.log('ok')
     invitedUsers.newUser(req.body.email).then(user => {
         let emailPromise = emailService.sendInvitation(req.body.email,req.body.firstname,req.body.lastname,user.id)
         let token = jwt.sign({id: user.id}, authService.randomSecretKey, {expiresIn: '4h'});
@@ -34,9 +35,9 @@ router.post('/', (req, res) => {
         })
     })
     .catch(error => res.status(400).send(error))
-})
+}
 
-router.get('/check', (req,res) => {
+exports.check = (req,res) => {
     invitation.getInvitation(req.body.id)
     .then((id) => {
         if(id.length == 1){
@@ -47,14 +48,12 @@ router.get('/check', (req,res) => {
         }
     })
     .catch((error) => res.status(400).send(error))
-})
+}
 
-router.post('/basic', (req,res) => {
+exports.basic = (req,res) => {
     authService.completeInvitation(req)
     .then((token) => res.status(201).send(token))
     .catch((err) => {
     res.status(err.status).send(err.error)
     })
-})
-
-module.exports = router
+}

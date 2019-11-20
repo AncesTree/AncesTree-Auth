@@ -1,17 +1,17 @@
 const knex = require("../config/database")
 
-    const newUser = (id, email) => {
+    const newUser = (name) => {
         return new Promise((resolve, reject) => {
-            knex('linkedin_users').insert({email: email, id: id})
+            knex('mydash_users').insert({name: name})
             .returning('*')
-            .then(user => resolve(user))
+            .then(user => resolve(user[0]))
             .catch(err => reject(err))
         })
     }
 
     const getUser = (id) => {
         return new Promise((resolve, reject) => {
-            knex('users')
+            knex('mydash_users')
             .select()
             .where({id: id})
             .then(user => resolve(user[0]))
@@ -19,11 +19,11 @@ const knex = require("../config/database")
         })
     }
 
-    const getUserByEmail = (email) => {
+    const getUserByName = (name) => {
         return new Promise((resolve, reject) => {
-            knex('linkedin_users')
+            knex('mydash_users')
             .select()
-            .where({email: email})
+            .where({name: name})
             .then(user => resolve(user[0]))
             .catch(err => reject(err))
         })
@@ -31,7 +31,7 @@ const knex = require("../config/database")
 
     const updateUser = (id, email, password) => {
         return new Promise((resolve, reject) => {
-            knex('users')
+            knex('mydash_users')
             .where({id: id})
             .update({email: email, password: password})
             .returning("*")
@@ -42,7 +42,7 @@ const knex = require("../config/database")
 
     const deleteUser = (id) => {
         return new Promise((resolve, reject) => {
-            knex('users')
+            knex('mydash_users')
             .where({id: id})
             .del()
             .then(user => resolve(user[0]))
@@ -50,4 +50,4 @@ const knex = require("../config/database")
         })
     }
 
-module.exports = {newUser, getUser, getUserByEmail, deleteUser, updateUser}
+module.exports = {newUser, getUser, getUserByName, deleteUser, updateUser}

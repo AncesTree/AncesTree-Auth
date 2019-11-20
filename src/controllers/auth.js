@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const users = require('../models/users')
 const authService = require('../services/authService')
 
-router.post('/login', (req,res) => {
+exports.login = (req,res) => {
     users.getUserByEmail(req.body.email).then(user => {
         if(user){
             if (authService.checkPassword(req.body.password, user.password)){
@@ -19,21 +19,19 @@ router.post('/login', (req,res) => {
             res.status(400).send("User not found!")
         }
     })
-})
+}
 
-router.post('/register', (req,res) => {
+exports.register = (req,res) => {
     users.newUserWithoutID(req.body.email, authService.hashPassword(req.body.password))
     .then((user) => {
         token = jwt.sign({id: user.id}, authService.randomSecretKey, {expiresIn: '4h'});
         res.status(201).send({token: token})
     })
     .catch(error => res.status(400).send(error))
-})
+}
 
-router.get('/checktoken', (req,res) => {
+exports.checktoken = (req,res) => {
     authService.checkToken(req).then((payload) => res.status(200).send({id: payload.id})).catch((error) => {
         res.status(403).send(error)
      })
-})
-
-module.exports = router
+}
