@@ -31,6 +31,6 @@ exports.callback = (req,res) => {
             })
         }
 		else {
-			res.redirect(config.CLIENT_URL+'/login')
+			res.status(403).send("Error")
         }
 	}
