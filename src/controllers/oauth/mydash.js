@@ -25,8 +25,8 @@ exports.callback = (req,res) => {
                                 const options = {headers: {Authorization: token, 'Content-Type': 'application/json'}}
                                 axios.post('https://ancestree-chat.igpolytech.fr/users',{
                                     id: user.id,
-                                    firstname: req.body.firstname,
-                                    lastname: req.body.lastname,
+                                    firstName: req.body.firstname,
+                                    lastName: req.body.lastname,
                                     pseudo: '',
                                     rooms: []
                                 }, options)
