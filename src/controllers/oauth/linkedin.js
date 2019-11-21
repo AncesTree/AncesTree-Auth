@@ -37,6 +37,8 @@ exports.registration_callback = (req,res) => {
 			headers: headers,
 			body: form_data
 		})
+		console.log(response)
+		console.log(body)
 		let body = JSON.parse(response.getBody())
 		console.log(req.body.id)
 		if (body.access_token){
@@ -77,6 +79,7 @@ exports.login_callback = (req,res) => {
 			headers: headers,
 			body: form_data
 		})
+		console.log(response)
 		let body = JSON.parse(response.getBody())
 		console.log(body)
 		if (body.access_token){
