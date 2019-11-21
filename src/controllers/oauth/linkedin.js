@@ -72,6 +72,7 @@ exports.login_callback = (req,res) => {
 			client_id: client.client_id,
 			client_secret: client.client_secret
 		})
+		console.log(form_data)
 		let headers = {
 			'Content-Type':'application/x-www-form-urlencoded',
 		}
