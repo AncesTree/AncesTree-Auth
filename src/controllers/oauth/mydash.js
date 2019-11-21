@@ -24,13 +24,13 @@ exports.callback = (req,res) => {
                                 console.log(result)
                                 let token = jwt.sign({id: result.id}, authService.randomSecretKey, {expiresIn: '4h'});
                                 const options = {headers: {Authorization: token, 'Content-Type': 'application/json'}}
-                                axios.post('https://ancestree-chat.igpolytech.fr/users',{
+                                let chatPromise = axios.post('https://ancestree-chat.igpolytech.fr/users',{
                                     id: result.id,
-                                    firstName: req.body.firstname,
-                                    lastName: req.body.lastname,
+                                    firstName: authorizedData.firstname,
+                                    lastName: authorizedData.lastname,
                                     rooms: []
                                 }, options)
-                                .then(() => res.status(201).send({token: token, isRegistered: false}))      
+                                chatPromise.then(() => res.status(201).send({token: token, isRegistered: false}))      
                                 .catch((error) => res.status(400).send(error))                   
                             })
                         }
