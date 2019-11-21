@@ -11,7 +11,6 @@ const users = require('../models/users')
 const invitedUsers = require("../models/invitedUsers")
 
 exports.newInvitation = (req, res) => {
-    console.log('ok')
     invitedUsers.newUser(req.body.email).then(user => {
         let emailPromise = emailService.sendInvitation(req.body.email,req.body.firstname,req.body.lastname,user.id)
         let token = jwt.sign({id: user.id}, authService.randomSecretKey, {expiresIn: '4h'});
@@ -23,7 +22,11 @@ exports.newInvitation = (req, res) => {
             lastname: req.body.lastname,
             email: req.body.email,
             birthdate: req.body.birthdate,
-            phone: req.body.phone
+            phone: req.body.phone,
+            privacy: 'private',
+            inscription_date: new Date(),
+            end_year: req.body.end_year,
+            start_year: req.body.start_year,
         }, options)
         let saveInvitationPromise = invitation.newInvitation(user.id)
 
