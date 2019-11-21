@@ -44,6 +44,7 @@ exports.registration_callback = (req,res) => {
 		if (body.access_token){
 			let account_email = linkedInService.getEmail(body.access_token)
 			let profile_picture = linkedInService.getProfilePicture(body.access_token)
+			console.log(profile_picture)
 			linkedInService.completeInvitation(account_email,req.body.id, profile_picture).then((result) => {
 				res.status(200).send({token: result.token})
 			})
