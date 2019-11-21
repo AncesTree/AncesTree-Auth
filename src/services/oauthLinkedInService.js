@@ -25,7 +25,11 @@ const completeInvitation = (email, invitationId, profilePicture) => {
 					}, options)
                     let deleteInvitationPromise = invitation.deleteInvitation(id)
 					let deleteInvitedUserPromise = invitedUsers.deleteUser(id)
-					profilePicturePromise.then((res) => console.log(res)).catch((error) => res.status(400).send(error))
+					console.log("ok")
+					profilePicturePromise.then((res) => console.log(res)).catch((error) => {
+						console.log(error)
+						res.status(400).send(error)
+					})
                     Promise.all([deleteInvitationPromise, deleteInvitedUserPromise])
                     .then((result) => {
                         token = jwt.sign({id: id}, authService.randomSecretKey, {expiresIn: '4h'});
