@@ -24,10 +24,9 @@ exports.callback = (req,res) => {
                                 let token = jwt.sign({id: result.id}, authService.randomSecretKey, {expiresIn: '4h'});
                                 const options = {headers: {Authorization: token, 'Content-Type': 'application/json'}}
                                 axios.post('https://ancestree-chat.igpolytech.fr/users',{
-                                    id: user.id,
+                                    id: result.id,
                                     firstName: req.body.firstname,
                                     lastName: req.body.lastname,
-                                    pseudo: '',
                                     rooms: []
                                 }, options)
                                 .then(() => res.status(201).send({token: token, isRegistered: false}))      
