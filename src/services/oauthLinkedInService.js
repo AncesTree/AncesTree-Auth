@@ -18,9 +18,8 @@ const completeInvitation = (email, invitationId, profilePicture) => {
 					let token = jwt.sign({id: invitationId}, authService.randomSecretKey, {expiresIn: '4h'});
 					const options = {headers: {Authorization: token, 'Content-Type': 'application/json'}}
 					
-					let profilePicturePromise = axios.put('https://ancestree-api-neo4j.igpolytech.fr/api/users',{
-						id: invitationId,
-						profileImageUrl: profilePicture
+					let profilePicturePromise = axios.post('https://ancestree-api-neo4j.igpolytech.fr/api/users/picture/'+invitationId,{
+						url: profilePicture
 					}, options)
                     let deleteInvitationPromise = invitation.deleteInvitation(id)
                     let deleteInvitedUserPromise = invitedUsers.deleteUser(id)
