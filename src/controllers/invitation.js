@@ -1,13 +1,9 @@
 const express = require("express")
-let router = express.Router();
-const request = require("sync-request")
-const qs = require("qs")
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
 const emailService = require("../services/emailService")
 const authService = require("../services/authService")
 const invitation = require('../models/invitation')
-const users = require('../models/users')
 const invitedUsers = require("../models/invitedUsers")
 
 exports.newInvitation = (req, res) => {
@@ -28,9 +24,18 @@ exports.newInvitation = (req, res) => {
             end_year: req.body.end_year,
             start_year: req.body.start_year,
         }, options)
+
+        let chatPromise = axios.post('https://ancestree-chat.igpolytech.fr/users',{
+            id: user.id,
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
+            pseudo: '',
+            rooms: []
+        }, options)
+
         let saveInvitationPromise = invitation.newInvitation(user.id)
 
-        Promise.all([graphPromise, saveInvitationPromise])
+        Promise.all([graphPromise, saveInvitationPromise, chatPromise])
         .then((result) =>{
             emailPromise.then(() => res.status(201).send(result[1]))
         }).catch((error) => {

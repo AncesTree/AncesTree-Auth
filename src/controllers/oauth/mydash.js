@@ -1,9 +1,8 @@
-const express = require("express")
 const jwt = require('jsonwebtoken');
 const authService = require('../../services/authService')
 const myDashService = require("../../services/oauthMyDashService")
 const myDash = require("../../models/myDashUsers")
-const config = require("../../config/config")
+const axios = require('axios');
 require('dotenv').config()
 
 exports.callback = (req,res) => {
@@ -23,7 +22,16 @@ exports.callback = (req,res) => {
                         else{
                             myDashService.createAccount(name).then((result) => {
                                 let token = jwt.sign({id: result.id}, authService.randomSecretKey, {expiresIn: '4h'});
-                                res.status(201).send({token: token, isRegistered: false})                            
+                                const options = {headers: {Authorization: token, 'Content-Type': 'application/json'}}
+                                axios.post('https://ancestree-chat.igpolytech.fr/users',{
+                                    id: user.id,
+                                    firstname: req.body.firstname,
+                                    lastname: req.body.lastname,
+                                    pseudo: '',
+                                    rooms: []
+                                }, options)
+                                .then(() => res.status(201).send({token: token, isRegistered: false}))      
+                                .catch((error) => res.status(400).send(error))                   
                             })
                         }
                     })
