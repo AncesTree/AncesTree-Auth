@@ -21,6 +21,7 @@ exports.callback = (req,res) => {
                         }
                         else{
                             myDashService.createAccount(name).then((result) => {
+                                console.log(result)
                                 let token = jwt.sign({id: result.id}, authService.randomSecretKey, {expiresIn: '4h'});
                                 const options = {headers: {Authorization: token, 'Content-Type': 'application/json'}}
                                 axios.post('https://ancestree-chat.igpolytech.fr/users',{
