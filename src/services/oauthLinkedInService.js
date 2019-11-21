@@ -12,7 +12,7 @@ const completeInvitation = (email, invitationId, profilePicture) => {
     return new Promise((resolve, reject) => {
         invitation.getInvitation(invitationId).then((invit) => {
             if(invit.length == 1){
-                let id = invit[0].id
+				let id = invit[0].id
                 linkedInUser.newUser(id, email)
                 .then(() => {
 					let token = jwt.sign({id: invitationId}, authService.randomSecretKey, {expiresIn: '4h'});
@@ -22,8 +22,9 @@ const completeInvitation = (email, invitationId, profilePicture) => {
 						url: profilePicture
 					}, options)
                     let deleteInvitationPromise = invitation.deleteInvitation(id)
-                    let deleteInvitedUserPromise = invitedUsers.deleteUser(id)
-                    Promise.all([deleteInvitationPromise, deleteInvitedUserPromise, profilePicturePromise])
+					let deleteInvitedUserPromise = invitedUsers.deleteUser(id)
+					profilePicturePromise.then((res) => console.log(res)).catch((error) => console.log(error))
+                    Promise.all([deleteInvitationPromise, deleteInvitedUserPromise])
                     .then((result) => {
                         token = jwt.sign({id: id}, authService.randomSecretKey, {expiresIn: '4h'});
                         resolve({token: token})
