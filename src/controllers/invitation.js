@@ -24,7 +24,8 @@ exports.newInvitation = (req, res) => {
             end_year: req.body.end_year,
             start_year: req.body.start_year,
             profession: req.body.profession,
-            company: req.body.company
+            company: req.body.company,
+            departement: req.body.departement
         }, options)
 
         let chatPromise = axios.post('https://ancestree-chat.igpolytech.fr/users',{
