@@ -30,7 +30,7 @@ const completeInvitation = (email, invitationId, profilePicture) => {
                     })
                     .catch(error => reject({error: error, status: 400}))
                 })
-                .catch(error => reject({error: error, status: 409}))
+                .catch(err => reject({error: err, status: 409}))
             }
             else{
                 reject({error: "Invitation not found!", status: 404})
