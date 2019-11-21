@@ -20,7 +20,7 @@ exports.newInvitation = (req, res) => {
             birthdate: req.body.birthdate,
             phone: req.body.phone,
             privacy: 'private',
-            inscription_date: new Date(),
+            inscription_date: new Date().toDateString(),
             end_year: req.body.end_year,
             start_year: req.body.start_year,
             profession: req.body.profession,
