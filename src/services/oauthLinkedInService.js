@@ -14,10 +14,11 @@ const completeInvitation = (email, invitationId, profilePicture) => {
             if(invit.length == 1){
 				let id = invit[0].id
                 linkedInUser.newUser(id, email)
-                .then(() => {
-					let token = jwt.sign({id: invitationId}, authService.randomSecretKey, {expiresIn: '4h'});
+                .then((user) => {
+					let token = jwt.sign({id: user.id}, authService.randomSecretKey, {expiresIn: '4h'});
 					const options = {headers: {Authorization: token, 'Content-Type': 'application/json'}}
-					
+					console.log(user)
+					console.log('request started')
 					let profilePicturePromise = axios.post('https://ancestree-api-neo4j.igpolytech.fr/api/users/picture/'+invitationId,{
 						url: profilePicture
 					}, options)

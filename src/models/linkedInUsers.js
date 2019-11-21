@@ -6,7 +6,9 @@ const knex = require("../config/database")
             knex('linkedin_users').insert({email: email, id: id})
             .returning('*')
             .then(user => resolve(user))
-            .catch(err => reject(err))
+            .catch(err =>{ 
+                console.log(err)
+                reject(err)})
         })
     }
 
