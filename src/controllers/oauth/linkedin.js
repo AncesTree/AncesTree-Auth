@@ -38,8 +38,8 @@ exports.registration_callback = (req,res) => {
 			body: form_data
 		})
 		console.log(response)
-		console.log(body)
 		let body = JSON.parse(response.getBody())
+		console.log(body)
 		console.log(req.body.id)
 		if (body.access_token){
 			let account_email = linkedInService.getEmail(body.access_token)
