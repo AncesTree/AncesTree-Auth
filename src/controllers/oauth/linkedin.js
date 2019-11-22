@@ -7,7 +7,6 @@ const qs = require("qs")
 const linkedInService = require("../../services/oauthLinkedInService")
 const config = require("../../config/config")
 const linkedinUser = require("../../models/linkedInUsers")
-const authService = require("../../services/authService")
 require('dotenv').config()
 
 const authServer = {
