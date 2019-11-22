@@ -6,6 +6,8 @@ const request = require("sync-request")
 const qs = require("qs")
 const linkedInService = require("../../services/oauthLinkedInService")
 const config = require("../../config/config")
+const linkedinUser = require("../../models/linkedInUsers")
+const authService = require("../../services/authService")
 require('dotenv').config()
 
 const authServer = {
@@ -51,6 +53,42 @@ exports.registration_callback = (req,res) => {
 			.catch((err) => {
 				res.status(403).send(err)
 			})
+		}
+		else {
+			res.status(403).send({error: 'unknown_error_2'})
+		}
+	}
+	else{
+		res.status(403).send({error: 'unknown_error_1'})
+	}
+}
+
+exports.association_callback = (req,res) => {
+	if(req.body.code){
+		let code = req.body.code
+		let form_data = qs.stringify({
+			grant_type: 'authorization_code',
+			code: code,
+			redirect_uri: 'https://ancestree.igpolytech.fr/callback_linkedin_associate',
+			client_id: client.client_id,
+			client_secret: client.client_secret
+		})
+		let headers = {
+			'Content-Type':'application/x-www-form-urlencoded',
+		}
+		let response = request('POST', authServer.tokenEndpoint, {
+			headers: headers,
+			body: form_data
+		})
+		let token = req.headers.authorization;
+		let payload = jwt.verify(token, authService.randomSecretKey)
+
+		let body = JSON.parse(response.getBody())
+		if (body.access_token){
+			let account_email = linkedInService.getEmail(body.access_token)
+			linkedinUser.newUser(payload.id,account_email)
+			.then(() => res.status(201).send("done"))
+			.catch((err) => res.status(400).send(err))
 		}
 		else {
 			res.status(403).send({error: 'unknown_error_2'})

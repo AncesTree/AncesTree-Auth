@@ -24,6 +24,7 @@ const fasync = route =>
 // linkedIn routes
 app.post('/oauth/linkedin/registration_callback', linkedin.registration_callback)
 app.post('/oauth/linkedin/login_callback', linkedin.login_callback)
+app.post('/oauth/linkedin/association_callback', linkedin.association_callback)
 
 // auth routes
 app.post('/auth/login', auth.login)
