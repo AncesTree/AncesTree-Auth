@@ -5,7 +5,7 @@ const invitedUsers = require("../models/invitedUsers")
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const authService = require("../services/authService")
-
+const axios = require('axios');
 
 const completeInvitation = (email, invitationId, profilePicture) => {
     console.log(invitationId, email)
