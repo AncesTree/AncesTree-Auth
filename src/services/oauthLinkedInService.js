@@ -15,21 +15,8 @@ const completeInvitation = (email, invitationId, profilePicture) => {
 				let id = invit[0].id
                 linkedInUser.newUser(id, email)
                 .then((user) => {
-					let token = jwt.sign({id: user[0].id}, authService.randomSecretKey, {expiresIn: '4h'});
-					const options = {headers: {Authorization: token, 'Content-Type': 'application/json'}}
-					console.log(user)
-					console.log('request started')
-					console.log(options)
-					let profilePicturePromise = axios.post('https://ancestree-api-neo4j.igpolytech.fr/api/users/picture/'+invitationId,{
-						url: profilePicture
-					}, options)
                     let deleteInvitationPromise = invitation.deleteInvitation(id)
 					let deleteInvitedUserPromise = invitedUsers.deleteUser(id)
-					console.log("ok")
-					profilePicturePromise.then((res) => console.log(res)).catch((error) => {
-						console.log(error)
-						res.status(400).send(error)
-					})
                     Promise.all([deleteInvitationPromise, deleteInvitedUserPromise])
                     .then((result) => {
                         token = jwt.sign({id: id}, authService.randomSecretKey, {expiresIn: '4h'});
