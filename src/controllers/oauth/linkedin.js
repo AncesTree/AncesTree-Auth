@@ -63,6 +63,7 @@ exports.registration_callback = (req,res) => {
 }
 
 exports.association_callback = (req,res) => {
+	console.log(req.body)
 	if(req.body.code){
 		let code = req.body.code
 		let form_data = qs.stringify({
@@ -80,6 +81,7 @@ exports.association_callback = (req,res) => {
 			body: form_data
 		})
 		let token = req.headers.authorization;
+		console.log(token)
 		let payload = jwt.verify(token, authService.randomSecretKey)
 
 		let body = JSON.parse(response.getBody())

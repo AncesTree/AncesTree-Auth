@@ -15,12 +15,6 @@ const invitation = require('./controllers/invitation')
 const users = require('./controllers/users')
 const auth = require('./controllers/auth')
 
-const fasync = route =>
-  (req, res, next) => {
-    console.log('1')
-    Promise.resolve(route(req, res)).catch(next)
-  }
-
 // linkedIn routes
 app.post('/oauth/linkedin/registration_callback', linkedin.registration_callback)
 app.post('/oauth/linkedin/login_callback', linkedin.login_callback)
@@ -40,7 +34,7 @@ app.get('/check', invitation.check)
 app.post('/basic', invitation.basic)
 
 // users routes
-app.get('/users', users.getUser)
+//app.get('/users', users.getUser)
 
 app.use((req, res, next) => {
   res.status(404).json({
