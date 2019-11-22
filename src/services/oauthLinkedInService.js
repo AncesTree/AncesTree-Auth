@@ -72,7 +72,7 @@ const getProfilePicture = (access_token) => {
 	})
 	if(resource.statusCode >= 200 && resource.statusCode < 300){
 		let body = JSON.parse(resource.getBody())
-		return body['profilePicture']['displayImage~']['elements'][3]['identifiers'][0]['identifier']
+		return body['profilePicture']['displayImage~']['elements'][0]['identifiers'][0]['identifier']
 	}
 	else {
 		return null
