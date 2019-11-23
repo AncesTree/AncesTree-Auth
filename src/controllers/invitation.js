@@ -14,8 +14,8 @@ exports.newInvitation = (req, res) => {
         
         let graphPromise = axios.post('https://ancestree-api-neo4j.igpolytech.fr/api/users',{
             id: user.id,
-            firstname: req.body.firstname,
-            lastname: req.body.lastname,
+            firstName: req.body.firstname,
+            lastName: req.body.lastname,
             email: req.body.email,
             birthdate: req.body.birthdate,
             phone: req.body.phone,
