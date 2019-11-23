@@ -32,7 +32,6 @@ exports.newInvitation = (req, res) => {
             id: user.id,
             firstname: req.body.firstname,
             lastname: req.body.lastname,
-            pseudo: '',
             rooms: []
         }, options)
 

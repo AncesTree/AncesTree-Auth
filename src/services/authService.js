@@ -34,6 +34,7 @@ const checkToken = (req) => {
 }
 
 const completeInvitation = (req) => {
+    console.log(req.body)
     return new Promise((resolve, reject) => {
         invitation.getInvitation(req.body.id).then((id) => {
             if(id.length == 1){
